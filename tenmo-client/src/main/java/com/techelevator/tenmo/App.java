@@ -6,7 +6,9 @@ import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 
+import java.security.Principal;
 import java.text.NumberFormat;
+import java.util.Arrays;
 
 public class App {
 
@@ -106,6 +108,8 @@ public class App {
 	}
 
 	private void sendBucks() {
+
+        System.out.println(accountService.findAllUsers(currentUser.getUser().getUsername()));
 		// TODO Auto-generated method stub
 		
 	}

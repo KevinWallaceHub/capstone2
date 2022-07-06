@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,18 +35,33 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public List<User> findAll() {
+    public User[] findAll(String username) {
+        //Fix ideas map possibly
         List<User> users = new ArrayList<>();
-        String sql = "SELECT user_id, username, password_hash FROM tenmo_user;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        String sql = "SELECT user_id, username, password_hash FROM tenmo_user WHERE username != ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
         while(results.next()) {
             User user = mapRowToUser(results);
             users.add(user);
         }
-        return users;
+        User[] userArray = new User[users.size()];
+
+        return users.toArray(userArray);
     }
 
-    @Override
+//    @Override
+//    public List<User> findAll() {
+//        List<User> users = new ArrayList<>();
+//        String sql = "SELECT user_id, username, password_hash FROM tenmo_user;";
+//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+//        while(results.next()) {
+//            User user = mapRowToUser(results);
+//            users.add(user);
+//        }
+//        return users;
+
+
+        @Override
     public User findByUsername(String username) throws UsernameNotFoundException {
         String sql = "SELECT user_id, username, password_hash FROM tenmo_user WHERE username ILIKE ?;";
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, username);

@@ -12,6 +12,8 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.Principal;
+
 public class AccountService {
 
 
@@ -38,6 +40,19 @@ public class AccountService {
 
         return account.getBalance();
     }
+
+    public User[] findAllUsers(String userName) throws NullPointerException{
+        User[] users = null;
+        try {
+            users = restTemplate.exchange(baseUrl + "accounts",
+                    HttpMethod.GET, makeAuthEntity(), User[].class).getBody();
+        } catch (RestClientResponseException | ResourceAccessException e){
+            BasicLogger.log(e.getMessage());
+        }
+
+        return users;
+    }
+
 
 
     private HttpEntity<Account> makeAccountEntity(Account account){
