@@ -22,6 +22,7 @@ public class App {
     private void run() {
         consoleService.printGreeting();
         loginMenu();
+        //no users until this block runs
         if (currentUser != null) {
             mainMenu();
         }
@@ -83,7 +84,7 @@ public class App {
             consoleService.pause();
         }
     }
-
+// Methods to implement the api Menu is currently displaying without functionality
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
 		

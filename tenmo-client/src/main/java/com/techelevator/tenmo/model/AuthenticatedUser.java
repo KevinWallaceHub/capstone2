@@ -1,7 +1,7 @@
 package com.techelevator.tenmo.model;
 
 public class AuthenticatedUser {
-	
+	//class where the token is stored! Uses this to handle login in app
 	private String token;
 	private User user;
 	
