@@ -6,6 +6,8 @@ import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 
+import java.text.NumberFormat;
+
 public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
@@ -88,7 +90,9 @@ public class App {
 // Methods to implement the api Menu is currently displaying without functionality
 	private void viewCurrentBalance() {
     double accountBalance = accountService.getAccountBalance(currentUser.getUser().getId());
-        System.out.println(accountBalance);
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        String formattedBalance = formatter.format(accountBalance);
+        System.out.println("Current account balance: " + formattedBalance);
 	}
 
 	private void viewTransferHistory() {

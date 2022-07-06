@@ -32,10 +32,9 @@ public class AccountService {
     try {
         account = restTemplate.exchange(baseUrl + "accounts/" + userId,
                 HttpMethod.GET, makeAuthEntity(), Account.class).getBody();
-    }catch (RestClientResponseException  |ResourceAccessException e ){
+    } catch (RestClientResponseException | ResourceAccessException e){
         BasicLogger.log(e.getMessage());
     }
-
 
         return account.getBalance();
     }
