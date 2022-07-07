@@ -111,7 +111,8 @@ public class App {
 	private void sendBucks() {
 
         consoleService.printListOfUsersToSendMoney(accountService.findAllUsers(currentUser.getUser().getUsername()));
-		// TODO Auto-generated method stub
+
+        // TODO Auto-generated method stub
 		
 	}
 
