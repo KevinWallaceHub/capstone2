@@ -1,6 +1,7 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
@@ -110,9 +111,12 @@ public class App {
 
 	private void sendBucks() {
 
-        consoleService.printListOfUsersToSendMoney(accountService.findAllUsers(currentUser.getUser().getUsername()));
-		// TODO Auto-generated method stub
-		
+        User[] userArray = accountService.findAllUsers(currentUser.getUser().getUsername());
+        consoleService.printListOfUsersToSendMoney(userArray);
+        User selectedUser = consoleService.userSelectionForTransfer(userArray);
+        double accountBalance = accountService.getAccountBalance(currentUser.getUser().getId());
+        double transferAmount = consoleService.getTransferAmount(accountBalance);
+
 	}
 
 	private void requestBucks() {
