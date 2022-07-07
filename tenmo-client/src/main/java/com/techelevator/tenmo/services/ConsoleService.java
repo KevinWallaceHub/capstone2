@@ -1,9 +1,11 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleService {
@@ -87,5 +89,46 @@ public class ConsoleService {
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");
     }
+
+    public void printListOfUsersToSendMoney(User[] users) {
+        System.out.println("---------------------------");
+        System.out.println("Users");
+        System.out.printf("%-22s%-22s\n", "ID", "Name");
+        System.out.println("---------------------------");
+        for (User user : users) {
+            System.out.printf("%-22s%-22s\n", user.getId(), user.getUsername());
+        }
+        System.out.println("---------------------------");
+
+        //split into two methods
+        int userInput = -1;
+        boolean validSelectionMade = false;
+        while (validSelectionMade == false) {
+            userInput = getUserInputForTransfer(userInput);
+            if (userInput == 0) {
+                validSelectionMade = true;
+            }
+            for (User user : users) {
+//            if( userInput == Math.toIntExact(user.getId())){
+//            }
+
+            }
+        }
+    }
+
+    public int getUserInputForTransfer(int userInput) {
+
+        try {
+            System.out.println("Enter ID of user you are sending to (0 to cancel): ");
+            userInput = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Please enter a valid user id number or 0 to exit");
+            scanner.next();
+        }
+
+
+        return userInput;
+    }
+
 
 }

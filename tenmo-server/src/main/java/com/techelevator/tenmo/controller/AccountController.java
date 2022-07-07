@@ -28,10 +28,10 @@ public class AccountController {
     return accountDao.getAccount(id);
     }
 
-    //fix here before the client side
+
     @RequestMapping(path = "accounts", method = RequestMethod.GET)
-    public User[] findAllUsers(String username){
-        return userDao.findAll(username);
+    public User[] findAllUsers(Principal principal){
+        return userDao.findAll(principal.getName());
     }
 
 }

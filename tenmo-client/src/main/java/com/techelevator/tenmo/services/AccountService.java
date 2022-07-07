@@ -19,10 +19,12 @@ public class AccountService {
 
     private final String baseUrl;
     private final RestTemplate restTemplate = new RestTemplate();
-    private String authToken = null;
+
+    private String authToken;
 
     public AccountService(String url) {
         this.baseUrl = url;
+
     }
 
     public void setAuthToken(String authToken) {
@@ -42,15 +44,15 @@ public class AccountService {
     }
 
     public User[] findAllUsers(String userName) throws NullPointerException{
-        User[] users = null;
+       // User[] users = null;
         try {
-            users = restTemplate.exchange(baseUrl + "accounts",
+            User[] users = restTemplate.exchange(baseUrl + "accounts",
                     HttpMethod.GET, makeAuthEntity(), User[].class).getBody();
+            return users;
         } catch (RestClientResponseException | ResourceAccessException e){
             BasicLogger.log(e.getMessage());
         }
-
-        return users;
+        return null;
     }
 
 

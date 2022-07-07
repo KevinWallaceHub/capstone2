@@ -29,6 +29,7 @@ public class App {
         loginMenu();
         //no users until this block runs
         if (currentUser != null) {
+            accountService.setAuthToken(currentUser.getToken());
             mainMenu();
         }
     }
@@ -109,7 +110,7 @@ public class App {
 
 	private void sendBucks() {
 
-        System.out.println(accountService.findAllUsers(currentUser.getUser().getUsername()));
+        consoleService.printListOfUsersToSendMoney(accountService.findAllUsers(currentUser.getUser().getUsername()));
 		// TODO Auto-generated method stub
 		
 	}
