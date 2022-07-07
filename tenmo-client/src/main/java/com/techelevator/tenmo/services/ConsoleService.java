@@ -99,8 +99,10 @@ public class ConsoleService {
             System.out.printf("%-22s%-22s\n", user.getId(), user.getUsername());
         }
         System.out.println("---------------------------");
+    }
 
-        //split into two methods
+    public User userSelectionForTransfer(User[] users) {
+        User selectedUser = null;
         int userInput = -1;
         boolean validSelectionMade = false;
         while (validSelectionMade == false) {
@@ -109,11 +111,18 @@ public class ConsoleService {
                 validSelectionMade = true;
             }
             for (User user : users) {
-//            if( userInput == Math.toIntExact(user.getId())){
-//            }
-
+                if (userInput == Math.toIntExact(user.getId())) {
+                    validSelectionMade = true;
+                    selectedUser = user;
+                }
             }
+
+            if (validSelectionMade == false){
+                System.out.println("Please enter a valid user id number or 0 to exit");
+            }
+
         }
+        return selectedUser;
     }
 
     public int getUserInputForTransfer(int userInput) {
@@ -122,10 +131,36 @@ public class ConsoleService {
             System.out.println("Enter ID of user you are sending to (0 to cancel): ");
             userInput = scanner.nextInt();
         } catch (InputMismatchException e) {
-            System.out.println("Please enter a valid user id number or 0 to exit");
             scanner.next();
         }
 
+
+        return userInput;
+    }
+
+    public double getTransferAmount(double accountBalance){
+        double userInput = -1;
+        boolean isValidTransferAmount = false;
+        while (isValidTransferAmount == false) {
+            System.out.println("Enter amount: ");
+            try {
+                userInput = scanner.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a valid number in the format XX.XX or 0 to exit");
+                scanner.next();
+                continue;
+            }
+            if (userInput < 0) {
+                System.out.println("Please enter a positive number in the format XX.XX or 0 to exit");
+                continue;
+            }
+            if (userInput > accountBalance){
+                System.out.println("Insufficient funds. Enter a new amount or 0 to exit");
+            }
+            else if(userInput <= accountBalance){
+                isValidTransferAmount =true;
+            }
+        }
 
         return userInput;
     }

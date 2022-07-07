@@ -8,8 +8,4 @@ public interface AccountDao {
 
     Account getAccount(long userId);
 
-
-
-//    List<Account> listAccounts(long userId);
-
 }
