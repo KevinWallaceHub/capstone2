@@ -1,11 +1,13 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.tenmo.services.TransferService;
 
 import java.security.Principal;
 import java.text.NumberFormat;
@@ -16,6 +18,7 @@ public class App {
     private static final String API_BASE_URL = "http://localhost:8080/";
     private final AccountService accountService = new AccountService(API_BASE_URL);
     private final ConsoleService consoleService = new ConsoleService();
+    private final TransferService transferService = new TransferService(API_BASE_URL);
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
 
     private AuthenticatedUser currentUser;
@@ -31,6 +34,7 @@ public class App {
         //no users until this block runs
         if (currentUser != null) {
             accountService.setAuthToken(currentUser.getToken());
+            transferService.setAuthToken(currentUser.getToken());
             mainMenu();
         }
     }
@@ -119,6 +123,12 @@ public class App {
         User selectedUser = consoleService.userSelectionForTransfer(userArray);
         double accountBalance = accountService.getAccountBalance(currentUser.getUser().getId());
         double transferAmount = consoleService.getTransferAmount(accountBalance);
+        Transfer transfer = new Transfer(currentUser.getUser().getUsername(), selectedUser.getUsername(), transferAmount);
+        transfer.setTransferStatusId(2);
+        transfer.setTransferTypeId(2);
+        transferService.createTransfer(currentUser.getUser().getId(), transfer);
+
+
 
 
 	}

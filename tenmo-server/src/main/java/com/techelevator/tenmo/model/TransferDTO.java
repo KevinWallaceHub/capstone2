@@ -29,4 +29,13 @@ public class TransferDTO {
     public void setAmount(Double amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "TransferDTO{" +
+                "sendingUsername='" + sendingUsername + '\'' +
+                ", receivingUsername='" + receivingUsername + '\'' +
+                ", amount=" + amount +
+                '}';
+    }
 }
