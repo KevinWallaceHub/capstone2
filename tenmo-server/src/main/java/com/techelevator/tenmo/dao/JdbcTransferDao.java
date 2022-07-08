@@ -7,6 +7,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class JdbcTransferDao implements TransferDao {
 
@@ -14,6 +17,23 @@ public class JdbcTransferDao implements TransferDao {
 
     public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public List<Transfer> listTransfers(String username) {
+        List<Transfer> transfers = new ArrayList<Transfer>();
+        String sql = "SELECT t.transfer_id, t.transfer_type_id, t.transfer_status_id, t.account_from, t.account_to, t.amount " +
+                "FROM transfer t " +
+                "JOIN account a ON a.account_id = t.account_from OR a.account_id = t.account_to " +
+                "JOIN tenmo_user tu ON a.user_id = tu.user_id " +
+                "WHERE tu.username = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+
+        while (results.next()){
+            transfers.add(mapRowToTransfer(results));
+        }
+
+        return transfers;
     }
 
     @Override
@@ -28,6 +48,8 @@ public class JdbcTransferDao implements TransferDao {
         }
             return true;
     }
+
+
 
     private Transfer mapRowToTransfer(SqlRowSet result) {
         Transfer transfer = new Transfer();

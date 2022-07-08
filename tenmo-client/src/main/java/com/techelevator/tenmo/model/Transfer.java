@@ -5,13 +5,38 @@ public class Transfer {
     private int transferId;
     private int transferTypeId;
     private int transferStatusId;
+    private int accountFrom;
+    private int accountTo;
     private String sendingUsername;
     private String receivingUsername;
     private Double amount;
 
+    public Transfer() {
+    }
+
     public Transfer(String accountFrom, String accountTo, Double amount) {
         this.sendingUsername = accountFrom;
         this.receivingUsername = accountTo;
+        this.amount = amount;
+    }
+
+    public void setAccountFrom(int accountFrom) {
+        this.accountFrom = accountFrom;
+    }
+
+    public void setAccountTo(int accountTo) {
+        this.accountTo = accountTo;
+    }
+
+    public int getAccountFrom() {
+        return accountFrom;
+    }
+
+    public int getAccountTo() {
+        return accountTo;
+    }
+
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

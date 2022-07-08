@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.ResourceAccessException;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 public class TransferController {
@@ -36,11 +37,23 @@ public class TransferController {
             return success;
         }
         if( success == true){
-            accountDao.decreaseAccountBalance(transferDto.getSendingUsername(), transferDto.getAmount());
-            accountDao.increaseAccountBalance(transferDto.getReceivingUsername(),transferDto.getAmount());
+            finishTransfer(id, transferDto);
       }
 
         return success;
 
     }
+
+    @RequestMapping (path = "accounts/{id}/transfers", method = RequestMethod.PUT)
+    public void finishTransfer(@PathVariable int id, @RequestBody TransferDTO transferDto){
+        accountDao.decreaseAccountBalance(transferDto.getSendingUsername(), transferDto.getAmount());
+        accountDao.increaseAccountBalance(transferDto.getReceivingUsername(),transferDto.getAmount());
+    }
+
+    @RequestMapping (path = "accounts/{id}/transfers", method = RequestMethod.GET)
+    public List<Transfer> getListOfTransfers(@PathVariable int id, Principal principal){
+        return transferDao.listTransfers(principal.getName());
+    }
+
+
 }

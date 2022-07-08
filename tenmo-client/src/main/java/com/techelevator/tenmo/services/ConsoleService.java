@@ -3,8 +3,10 @@ package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.Transfer;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -165,5 +167,18 @@ public class ConsoleService {
         return userInput;
     }
 
+    public void printListOfTransfers(Transfer[] transfers){
+        System.out.println("----------------------------------------------------");
+        System.out.println("Transfers");
+        System.out.printf("%-22s%-22s%-22s\n", "ID", "From/To", "Amount");
+        System.out.println("----------------------------------------------------");
+        for (Transfer transfer : transfers) {
+            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+            String formattedAmount = formatter.format(transfer.getAmount());
+            String fromToUsername;
+            System.out.printf("%-22s%-22s%-22s\n", transfer.getTransferId(), transfer.getAccountFrom(), formattedAmount);
+        }
+        System.out.println("----------------------------------------------------");
+    }
 
 }

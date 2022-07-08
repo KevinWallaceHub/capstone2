@@ -104,8 +104,8 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
-		
+		Transfer[] transferArray = transferService.listTransfers(currentUser.getUser().getId(), currentUser.getUser().getUsername());
+        consoleService.printListOfTransfers(transferArray);
 	}
 
 	private void viewPendingRequests() {
@@ -115,8 +115,6 @@ public class App {
 
 	private void sendBucks() {
 
-
-        consoleService.printListOfUsersToSendMoney(accountService.findAllUsers(currentUser.getUser().getUsername()));
         User[] userArray = accountService.findAllUsers(currentUser.getUser().getUsername());
         consoleService.printListOfUsersToSendMoney(userArray);
         User selectedUser = consoleService.userSelectionForTransfer(userArray);
@@ -124,9 +122,6 @@ public class App {
         double transferAmount = consoleService.getTransferAmount(accountBalance);
         Transfer transfer = new Transfer(currentUser.getUser().getUsername(), selectedUser.getUsername(), transferAmount);
         transferService.createTransfer(currentUser.getUser().getId(), transfer);
-
-
-
 
 	}
 
