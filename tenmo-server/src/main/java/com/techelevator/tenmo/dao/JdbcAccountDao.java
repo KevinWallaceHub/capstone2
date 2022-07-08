@@ -30,6 +30,32 @@ public class JdbcAccountDao implements AccountDao{
         return account;
     }
 
+    @Override
+    public double increaseAccountBalance(String receivingUsername, double amount) {
+        Double newBalance = null;
+        String sql = "UPDATE account " +
+                "SET balance = (balance + ?) " +
+                "FROM tenmo_user " +
+                "WHERE tenmo_user.user_id = account.user_id AND tenmo_user.username = ? " +
+                "RETURNING balance";
+         newBalance = Double.valueOf(jdbcTemplate.update(sql, receivingUsername, amount));
+
+        return newBalance;
+    }
+
+    @Override
+    public double decreaseAccountBalance(String sendingUsername, double amount) {
+        Double newBalance = null;
+        String sql = "UPDATE account " +
+                "SET balance = (balance - ?) " +
+                "FROM tenmo_user " +
+                "WHERE tenmo_user.user_id = account.user_id AND tenmo_user.username = ? " +
+                "RETURNING balance";
+        newBalance = Double.valueOf(jdbcTemplate.update(sql, sendingUsername, amount));
+
+        return newBalance;
+
+    }
 
 
 //    @Override

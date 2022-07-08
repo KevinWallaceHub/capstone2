@@ -1,0 +1,2 @@
+2022-07-08T10:04:55.1423864 500 : [{"timestamp":"2022-07-08T14:04:55.110+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; bad SQL grammar [UPDATE account SET balance = (balance - ?) FROM tenmo_u... (578 bytes)]
+2022-07-08T10:07:00.2538563 500 : [{"timestamp":"2022-07-08T14:07:00.225+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; bad SQL grammar [UPDATE account SET balance = (balance - ?) FROM tenmo_u... (578 bytes)]

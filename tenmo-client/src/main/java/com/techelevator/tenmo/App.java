@@ -117,15 +117,12 @@ public class App {
 
 
         consoleService.printListOfUsersToSendMoney(accountService.findAllUsers(currentUser.getUser().getUsername()));
-
         User[] userArray = accountService.findAllUsers(currentUser.getUser().getUsername());
         consoleService.printListOfUsersToSendMoney(userArray);
         User selectedUser = consoleService.userSelectionForTransfer(userArray);
         double accountBalance = accountService.getAccountBalance(currentUser.getUser().getId());
         double transferAmount = consoleService.getTransferAmount(accountBalance);
         Transfer transfer = new Transfer(currentUser.getUser().getUsername(), selectedUser.getUsername(), transferAmount);
-        transfer.setTransferStatusId(2);
-        transfer.setTransferTypeId(2);
         transferService.createTransfer(currentUser.getUser().getId(), transfer);
 
 

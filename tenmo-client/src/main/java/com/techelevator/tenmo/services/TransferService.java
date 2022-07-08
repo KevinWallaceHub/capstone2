@@ -25,7 +25,6 @@ public class TransferService {
 
     public boolean createTransfer(long userId, Transfer transfer) {
 
-
         HttpEntity<Transfer> entity = makeTransferAuthEntity(transfer);
         boolean success = false;
         try {

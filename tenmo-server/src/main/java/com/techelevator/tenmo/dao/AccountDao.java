@@ -8,4 +8,8 @@ public interface AccountDao {
 
     Account getAccount(long userId);
 
+    double increaseAccountBalance(String receivingUsername, double amount);
+
+    double decreaseAccountBalance(String sendingUsername, double amount);
+
 }

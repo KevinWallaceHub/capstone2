@@ -5,13 +5,13 @@ public class Transfer {
     private int transferId;
     private int transferTypeId;
     private int transferStatusId;
-    private String accountFrom;
-    private String accountTo;
+    private String sendingUsername;
+    private String receivingUsername;
     private Double amount;
 
     public Transfer(String accountFrom, String accountTo, Double amount) {
-        this.accountFrom = accountFrom;
-        this.accountTo = accountTo;
+        this.sendingUsername = accountFrom;
+        this.receivingUsername = accountTo;
         this.amount = amount;
     }
 
@@ -39,20 +39,20 @@ public class Transfer {
         this.transferStatusId = transferStatusId;
     }
 
-    public String getAccountFrom() {
-        return accountFrom;
+    public String getSendingUsername() {
+        return sendingUsername;
     }
 
-    public void setAccountFrom(String accountFrom) {
-        this.accountFrom = accountFrom;
+    public void setSendingUsername(String sendingUsername) {
+        this.sendingUsername = sendingUsername;
     }
 
-    public String getAccountTo() {
-        return accountTo;
+    public String getReceivingUsername() {
+        return receivingUsername;
     }
 
-    public void setAccountTo(String accountTo) {
-        this.accountTo = accountTo;
+    public void setReceivingUsername(String receivingUsername) {
+        this.receivingUsername = receivingUsername;
     }
 
     public double getAmount() {

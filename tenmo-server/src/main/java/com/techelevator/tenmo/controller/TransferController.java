@@ -8,6 +8,7 @@ import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.TransferDTO;
 import com.techelevator.tenmo.model.User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.security.Principal;
 
@@ -26,6 +27,20 @@ public class TransferController {
 
     @RequestMapping (path = "accounts/{id}/transfers", method = RequestMethod.POST)
     public boolean createTransfer(@PathVariable int id, @RequestBody TransferDTO transferDto){
-        return transferDao.createTransfer(transferDto.getSendingUsername(), transferDto.getReceivingUsername(), transferDto.getAmount());
+        boolean success = false;
+        try {
+            transferDao.createTransfer(transferDto.getSendingUsername(), transferDto.getReceivingUsername(),
+                    transferDto.getAmount());
+            success = true;
+        } catch (ResourceAccessException e){
+            return success;
+        }
+        if( success == true){
+            accountDao.decreaseAccountBalance(transferDto.getSendingUsername(), transferDto.getAmount());
+            accountDao.increaseAccountBalance(transferDto.getReceivingUsername(),transferDto.getAmount());
+      }
+
+        return success;
+
     }
 }
