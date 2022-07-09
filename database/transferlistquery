@@ -1,0 +1,121 @@
+SELECT
+--*
+T.Transfer_Id,
+	T.Transfer_Type_Id,
+	T.Transfer_Status_Id,
+	--T.Account_From,
+	UAL1.Username AS Sending_UserName,
+	--T.Account_To,
+	UAL2.Username AS Receiveing_UserName,
+	T.Amount
+FROM
+	tenmo_user TU
+INNER JOIN
+	account A
+ON
+	TU.user_id = A.user_id
+INNER JOIN
+	transfer T
+ON
+	A.account_id = T.account_from
+	OR A.Account_id = T.account_to
+INNER JOIN(
+	SELECT
+		TU.username,
+		A.Account_Id
+	FROM
+		tenmo_user TU
+	INNER JOIN
+		account A
+	ON
+		TU.user_id = A.user_id
+) UAL1	
+ON
+	T.Account_From = UAL1.Account_ID
+INNER JOIN(
+	SELECT
+		TU.username,
+		A.Account_Id
+	FROM
+		tenmo_user TU
+	INNER JOIN
+		account A
+	ON
+		TU.user_id = A.user_id
+) UAL2	
+ON
+	T.Account_To = UAL2.Account_ID
+WHERE
+	TU.user_id in (1001);
+
+
+
+
+INNER JOIN
+	Account A2
+ON
+	T.account_from = A2.Account_id
+INNER JOIN(
+	SELECT
+		DISTINCT
+			T.Account_From,
+			A.User_ID,
+			TU.UserName
+	FROM
+		transfer T
+	INNER JOIN
+		Account A
+	ON
+		T.Account_From = A.Account_id
+		OR T.Account_To = A.Account_Id
+	INNER JOIN
+		Tenmo_User TU
+	ON
+		A.user_id = TU.User_Id
+
+) AF
+ON
+	T.Account_From = AF.Account_From
+
+
+
+
+
+
+
+transfer_type TT
+ON
+ 	T.transfer_type_id = TT.transfer_type_id
+INNER JOIN
+	transfer_status TS
+ON
+	T.transfer_Status_id = TS.Transfer_Status_id
+
+SELECT *
+FROM
+ transfer;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount)
+VALUES (2,2, (SELECT account_id FROM account WHERE user_id = 1001), (SELECT account_id FROM account WHERE user_id = 1002), 25);
+
+SELECT * from transfer;
+
+SELECT t.transfer_id, t.transfer_type_id, t.transfer_status_id, t.account_from, t.account_to, t.amount
+FROM transfer t
+JOIN account a ON a.account_id = t.account_from OR a.account_id = t.account_to
+JOIN tenmo_user tu ON a.user_id = tu.user_id
+WHERE a.user_id = 1001;
+

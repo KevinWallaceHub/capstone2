@@ -175,8 +175,7 @@ public class ConsoleService {
         for (Transfer transfer : transfers) {
             NumberFormat formatter = NumberFormat.getCurrencyInstance();
             String formattedAmount = formatter.format(transfer.getAmount());
-            String fromToUsername;
-            System.out.printf("%-22s%-22s%-22s\n", transfer.getTransferId(), transfer.getAccountFrom(), formattedAmount);
+            System.out.printf("%-22s%-22s%-22s\n", transfer.getTransferId(), ("Receiving: " + transfer.getReceivingUsername() + " Sending: " + transfer.getSendingUsername() + " ") , formattedAmount);
         }
         System.out.println("----------------------------------------------------");
     }

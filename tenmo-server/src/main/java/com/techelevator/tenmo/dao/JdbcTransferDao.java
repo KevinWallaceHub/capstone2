@@ -22,11 +22,27 @@ public class JdbcTransferDao implements TransferDao {
     @Override
     public List<Transfer> listTransfers(String username) {
         List<Transfer> transfers = new ArrayList<Transfer>();
-        String sql = "SELECT t.transfer_id, t.transfer_type_id, t.transfer_status_id, t.account_from, t.account_to, t.amount " +
-                "FROM transfer t " +
-                "JOIN account a ON a.account_id = t.account_from OR a.account_id = t.account_to " +
-                "JOIN tenmo_user tu ON a.user_id = tu.user_id " +
-                "WHERE tu.username = ?";
+        String sql = "SELECT t.Transfer_Id, t.Transfer_Type_Id, " +
+                "t.Transfer_Status_Id, UAL1.Username AS sending_UserName, " +
+                "t.account_to, t.account_from, " +
+                "UAL2.Username AS receiving_Username, " +
+                "t.Amount FROM tenmo_user tu " +
+                "INNER JOIN " +
+                "account a ON tu.user_id = a.user_id " +
+                "INNER JOIN " +
+                "transfer t ON a.account_id = t.account_from " +
+                "OR a.Account_id = t.account_to " +
+                "INNER JOIN(SELECT TU.username, A.Account_Id " +
+                "FROM tenmo_user TU " +
+                "INNER JOIN " +
+                "account A " +
+                "ON TU.user_id = A.user_id) UAL1 " +
+                "ON T.Account_From = UAL1.Account_ID " +
+                "INNER JOIN(SELECT TU.username, A.Account_Id " +
+                "FROM tenmo_user TU " +
+                "INNER JOIN account A ON TU.user_id = A.user_id) UAL2 " +
+                "ON T.Account_To = UAL2.Account_ID " +
+                "WHERE TU.username= ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
 
         while (results.next()){
@@ -56,6 +72,8 @@ public class JdbcTransferDao implements TransferDao {
         transfer.setTransferId(result.getInt("transfer_id"));
         transfer.setTransferTypeId(result.getInt("transfer_type_id"));
         transfer.setTransferStatusId(result.getInt("transfer_status_id"));
+        transfer.setReceivingUsername(result.getString("receiving_username"));
+        transfer.setSendingUsername(result.getString("sending_username"));
         transfer.setAccountFrom(result.getInt("account_from"));
         transfer.setAccountTo(result.getInt("account_to"));
         transfer.setAmount(result.getDouble("amount"));

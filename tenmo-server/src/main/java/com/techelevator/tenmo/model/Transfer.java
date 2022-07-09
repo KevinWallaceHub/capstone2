@@ -5,9 +5,31 @@ public class Transfer {
     private int transferId;
     private int transferTypeId;
     private int transferStatusId;
+    private String receivingUsername;
+    private String sendingUsername;
     private int accountFrom;
     private int accountTo;
     private Double amount;
+
+    public String getReceivingUsername() {
+        return receivingUsername;
+    }
+
+    public void setReceivingUsername(String receivingUsername) {
+        this.receivingUsername = receivingUsername;
+    }
+
+    public String getSendingUsername() {
+        return sendingUsername;
+    }
+
+    public void setSendingUsername(String sendingUsername) {
+        this.sendingUsername = sendingUsername;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
 
     public int getTransferId() {
         return transferId;
