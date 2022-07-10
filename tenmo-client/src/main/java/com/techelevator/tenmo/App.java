@@ -105,7 +105,8 @@ public class App {
 
 	private void viewTransferHistory() {
 		Transfer[] transferArray = transferService.listTransfers(currentUser.getUser().getId(), currentUser.getUser().getUsername());
-        consoleService.printListOfTransfers(transferArray);
+        consoleService.printListOfTransfers(transferArray, currentUser.getUser());
+        consoleService.printTransferDetails(consoleService.transferDetailsFromUserSelection(transferArray));
 	}
 
 	private void viewPendingRequests() {

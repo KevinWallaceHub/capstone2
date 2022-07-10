@@ -167,7 +167,7 @@ public class ConsoleService {
         return userInput;
     }
 
-    public void printListOfTransfers(Transfer[] transfers){
+    public void printListOfTransfers(Transfer[] transfers, User currentUser){
         System.out.println("----------------------------------------------------");
         System.out.println("Transfers");
         System.out.printf("%-22s%-22s%-22s\n", "ID", "From/To", "Amount");
@@ -175,9 +175,67 @@ public class ConsoleService {
         for (Transfer transfer : transfers) {
             NumberFormat formatter = NumberFormat.getCurrencyInstance();
             String formattedAmount = formatter.format(transfer.getAmount());
-            System.out.printf("%-22s%-22s%-22s\n", transfer.getTransferId(), ("Receiving: " + transfer.getReceivingUsername() + " Sending: " + transfer.getSendingUsername() + " ") , formattedAmount);
+            String fromToUsername;
+            if(transfer.getReceivingUsername().equalsIgnoreCase(currentUser.getUsername())){
+                fromToUsername = "From: " + transfer.getSendingUsername();
+            }else {fromToUsername = "To: " +  transfer.getReceivingUsername();}
+            System.out.printf("%-22s%-22s%-22s\n", transfer.getTransferId(), (fromToUsername +  " ") , formattedAmount);
         }
         System.out.println("----------------------------------------------------");
+    }
+
+    public Transfer transferDetailsFromUserSelection(Transfer[] transfers){
+        int userInput = -1;
+        Transfer userSelectedTransfer = null;
+        boolean isValidTransferId = false;
+        while (isValidTransferId == false) {
+            System.out.println("Please enter transfer ID to view details (0 to cancel): ");
+            try {
+                userInput = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter valid transfer number");
+                scanner.next();
+                continue;
+            }if(userInput == 0){
+                break;
+            }
+            for(Transfer transfer: transfers){
+                if(userInput == transfer.getTransferId()){
+                    userSelectedTransfer = transfer;
+                    isValidTransferId = true;
+                }
+            }if(userSelectedTransfer == null){
+                System.out.println("Transfer Id not found");
+            }
+        }
+        return userSelectedTransfer;
+    }
+
+    public void printTransferDetails(Transfer transfer){
+        System.out.println("-------------------------------------");
+        System.out.println("Transfer Details");
+        System.out.println("-------------------------------------");
+        System.out.println("Id: " + transfer.getTransferId());
+        System.out.println("From: " + transfer.getSendingUsername());
+        System.out.println("To: " + transfer.getReceivingUsername());
+        if(transfer.getTransferTypeId() == 1){
+            System.out.println("Type: Request");
+        }
+        if(transfer.getTransferTypeId() == 2) {
+            System.out.println("Type: Send");
+        }
+        if(transfer.getTransferStatusId() == 1){
+            System.out.println("Status: Pending");
+        }
+        if(transfer.getTransferStatusId() == 2){
+            System.out.println("Status: Approved");
+        }
+        if(transfer.getTransferStatusId() ==3){
+            System.out.println("Status: Rejected");
+        }
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        String formattedAmount = formatter.format(transfer.getAmount());
+        System.out.println("Amount: " + formattedAmount);
     }
 
 }

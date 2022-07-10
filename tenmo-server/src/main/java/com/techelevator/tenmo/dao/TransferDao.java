@@ -15,5 +15,5 @@ public interface TransferDao {
 
     boolean createTransfer(String receivingUsername, String sendingUsername, Double transferAmount);
 
-    //Get transfer by id
+
 }
