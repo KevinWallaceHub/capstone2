@@ -25,7 +25,7 @@ public class TransferDaoTest extends BaseDaoTests{
 
     @Test
     public void create_transfer_returns_true(){
-        boolean wasTransferCreated = sut.createTransfer("testUserOne", "testUserTwo", 100.00);
+        boolean wasTransferCreated = sut.createTransfer(2,2,"testUserOne", "testUserTwo", 100.00);
         Assert.assertTrue(wasTransferCreated);
     }
 

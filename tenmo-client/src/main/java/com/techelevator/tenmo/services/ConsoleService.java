@@ -130,7 +130,7 @@ public class ConsoleService {
     public int getUserInputForTransfer(int userInput) {
 
         try {
-            System.out.println("Enter ID of user you are sending to (0 to cancel): ");
+            System.out.println("Enter ID of user (0 to cancel): ");
             userInput = scanner.nextInt();
         } catch (InputMismatchException e) {
             scanner.next();
@@ -167,19 +167,26 @@ public class ConsoleService {
         return userInput;
     }
 
-    public void printListOfTransfers(Transfer[] transfers, User currentUser){
+    public void printListOfTransfers(Transfer[] transfers, User currentUser) {
         System.out.println("----------------------------------------------------");
         System.out.println("Transfers");
         System.out.printf("%-22s%-22s%-22s\n", "ID", "From/To", "Amount");
         System.out.println("----------------------------------------------------");
         for (Transfer transfer : transfers) {
-            NumberFormat formatter = NumberFormat.getCurrencyInstance();
-            String formattedAmount = formatter.format(transfer.getAmount());
-            String fromToUsername;
-            if(transfer.getReceivingUsername().equalsIgnoreCase(currentUser.getUsername())){
-                fromToUsername = "From: " + transfer.getSendingUsername();
-            }else {fromToUsername = "To: " +  transfer.getReceivingUsername();}
-            System.out.printf("%-22s%-22s%-22s\n", transfer.getTransferId(), (fromToUsername +  " ") , formattedAmount);
+            if (transfer.getTransferStatusId() != 1) {
+                NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                String formattedAmount = formatter.format(transfer.getAmount());
+                String fromToUsername;
+                if (transfer.getReceivingUsername().equalsIgnoreCase(currentUser.getUsername())) {
+                    fromToUsername = "From: " + transfer.getSendingUsername();
+                } else {
+                    fromToUsername = "To: " + transfer.getReceivingUsername();
+                }
+                System.out.printf("%-22s%-22s%-22s\n", transfer.getTransferId(), (fromToUsername + " "), formattedAmount);
+            } else {
+                continue;
+            }
+
         }
         System.out.println("----------------------------------------------------");
     }
@@ -238,4 +245,50 @@ public class ConsoleService {
         System.out.println("Amount: " + formattedAmount);
     }
 
+    public double getRequestAmount(){
+        double userInput = -1;
+        boolean isValidTransferAmount = false;
+        while (isValidTransferAmount == false) {
+            System.out.println("Enter amount: ");
+            try {
+                userInput = scanner.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a valid number in the format XX.XX or 0 to exit");
+                scanner.next();
+                continue;
+            }
+            if (userInput < 0) {
+                System.out.println("Please enter a positive number in the format XX.XX or 0 to exit");
+                continue;
+            }
+
+            isValidTransferAmount =true;
+
+            }
+        return userInput;
+        }
+
+    public void printListOfPendingTransfers(Transfer[] transfers, User currentUser) {
+        System.out.println("----------------------------------------------------");
+        System.out.println("Transfers");
+        System.out.printf("%-22s%-22s%-22s\n", "ID", "From/To", "Amount");
+        System.out.println("----------------------------------------------------");
+        for (Transfer transfer : transfers) {
+            if (transfer.getTransferStatusId() == 1) {
+                NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                String formattedAmount = formatter.format(transfer.getAmount());
+                String fromToUsername;
+                if (transfer.getReceivingUsername().equalsIgnoreCase(currentUser.getUsername())) {
+                    fromToUsername = "From: " + transfer.getSendingUsername();
+                } else {
+                    fromToUsername = "To: " + transfer.getReceivingUsername();
+                }
+                System.out.printf("%-22s%-22s%-22s\n", transfer.getTransferId(), (fromToUsername + " "), formattedAmount);
+            } else {
+                continue;
+            }
+
+        }
+        System.out.println("----------------------------------------------------");
+    }
 }

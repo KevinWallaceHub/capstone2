@@ -106,12 +106,19 @@ public class App {
 	private void viewTransferHistory() {
 		Transfer[] transferArray = transferService.listTransfers(currentUser.getUser().getId(), currentUser.getUser().getUsername());
         consoleService.printListOfTransfers(transferArray, currentUser.getUser());
-        consoleService.printTransferDetails(consoleService.transferDetailsFromUserSelection(transferArray));
+        Transfer selectedTransfer = null;
+        selectedTransfer = consoleService.transferDetailsFromUserSelection(transferArray);
+        if (selectedTransfer != null){
+        consoleService.printTransferDetails(selectedTransfer);}
 	}
 
 	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
-		
+        Transfer[] transferArray = transferService.listTransfers(currentUser.getUser().getId(), currentUser.getUser().getUsername());
+        consoleService.printListOfPendingTransfers(transferArray, currentUser.getUser());
+        Transfer selectedTransfer = null;
+        selectedTransfer = consoleService.transferDetailsFromUserSelection(transferArray);
+        if (selectedTransfer != null){
+            consoleService.printTransferDetails(selectedTransfer);}
 	}
 
 	private void sendBucks() {
@@ -119,16 +126,22 @@ public class App {
         User[] userArray = accountService.findAllUsers(currentUser.getUser().getUsername());
         consoleService.printListOfUsersToSendMoney(userArray);
         User selectedUser = consoleService.userSelectionForTransfer(userArray);
+        if (selectedUser != null){
         double accountBalance = accountService.getAccountBalance(currentUser.getUser().getId());
         double transferAmount = consoleService.getTransferAmount(accountBalance);
         Transfer transfer = new Transfer(currentUser.getUser().getUsername(), selectedUser.getUsername(), transferAmount);
-        transferService.createTransfer(currentUser.getUser().getId(), transfer);
+        transferService.createTransfer(currentUser.getUser().getId(), transfer);}
 
 	}
 
 	private void requestBucks() {
-		// TODO Auto-generated method stub
-		
+        User[] userArray = accountService.findAllUsers(currentUser.getUser().getUsername());
+        consoleService.printListOfUsersToSendMoney(userArray);
+        User selectedUser = consoleService.userSelectionForTransfer(userArray);
+        if (selectedUser != null){
+            double requestAmount = consoleService.getRequestAmount();
+            Transfer transfer = new Transfer(selectedUser.getUsername(), currentUser.getUser().getUsername(), requestAmount);
+            transferService.createRequest(selectedUser.getId(), transfer);}
 	}
 
 }

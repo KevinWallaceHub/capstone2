@@ -30,6 +30,8 @@ public class TransferService {
     public boolean createTransfer(long userId, Transfer transfer) {
 
         HttpEntity<Transfer> entity = makeTransferAuthEntity(transfer);
+        transfer.setTransferTypeId(2);
+        transfer.setTransferStatusId(2);
         boolean success = false;
         try {
             String url = baseUrl + "accounts/" + userId + "/transfers";
@@ -40,6 +42,24 @@ public class TransferService {
         }
         return success;
     }
+
+    public boolean createRequest(long userId, Transfer transfer) {
+
+        HttpEntity<Transfer> entity = makeTransferAuthEntity(transfer);
+        transfer.setTransferTypeId(1);
+        transfer.setTransferStatusId(1);
+        boolean success = false;
+        try {
+            String url = baseUrl + "accounts/" + userId + "/transfers";
+            restTemplate.exchange(url, HttpMethod.POST, entity, Void.class);
+            success = true;
+        }catch (RestClientResponseException | ResourceAccessException e){
+            BasicLogger.log(e.getMessage());
+        }
+        return success;
+    }
+
+
 
     public Transfer[] listTransfers(long userId, String username) throws NullPointerException{
         try {

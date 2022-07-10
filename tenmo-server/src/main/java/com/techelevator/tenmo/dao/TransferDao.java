@@ -13,7 +13,7 @@ public interface TransferDao {
 
     // Create transfer
 
-    boolean createTransfer(String receivingUsername, String sendingUsername, Double transferAmount);
+    boolean createTransfer(int typeId, int StatusId, String receivingUsername, String sendingUsername, Double transferAmount);
 
 
 }

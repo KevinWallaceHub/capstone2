@@ -53,12 +53,12 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public boolean createTransfer(String sendingUsername, String receivingUsername, Double transferAmount) {
+    public boolean createTransfer(int transferTypeId, int transferStatusId, String sendingUsername, String receivingUsername, Double transferAmount) {
         String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
-                "VALUES (2,2, (SELECT a.account_id FROM account a JOIN tenmo_user t ON t.user_id = a.user_id WHERE t.username = ?), " +
+                "VALUES (?,?, (SELECT a.account_id FROM account a JOIN tenmo_user t ON t.user_id = a.user_id WHERE t.username = ?), " +
                 "(SELECT a.account_id FROM account a JOIN tenmo_user t ON t.user_id = a.user_id WHERE t.username = ?), ?)";
         try {
-            jdbcTemplate.update(sql, sendingUsername, receivingUsername, transferAmount);
+            jdbcTemplate.update(sql, transferTypeId, transferStatusId, sendingUsername, receivingUsername, transferAmount);
         } catch (DataAccessException e){
             return false;
         }
